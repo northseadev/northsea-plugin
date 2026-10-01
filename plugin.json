@@ -10,5 +10,89 @@
   "homepage": "https://github.com/northseadev/northsea-plugin",
   "repository": "https://github.com/northseadev/northsea-plugin",
   "license": "MIT",
-  "keywords": ["northsea", "market-research", "surveys", "mcp"]
+  "keywords": ["northsea", "market-research", "surveys", "mcp"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Northsea",
+        "shortDescription": "Survey studies and results",
+        "longDescription": "Northsea is an AI-native research platform that helps consultants, investors, and strategy teams generate deeper customer insights. This plugin connects your Northsea account, so you can ask about your studies and their results in plain language instead of exporting tables.\n\nAsk which studies are in fieldwork, what a study's questionnaire and audience look like, or what respondents answered. Results are computed exactly as the Northsea Results page computes them: answer distributions with shares, Net Promoter Score with a 95% interval, means and medians, and the written answers to open questions, optionally narrowed to one audience segment.\n\nYou sign in with your own Northsea account. The plugin is read-only and only sees the studies and results your account can see in Northsea.",
+        "developerName": "Northsea",
+        "category": "Productivity",
+        "capabilities": [
+          "List the studies your Northsea account can see, with their status and when they went live",
+          "Read a study's questionnaire, audience segments and AI executive summary",
+          "Query results: answer distributions, NPS, means and written answers, per audience segment"
+        ],
+        "websiteURL": "https://northsea.co",
+        "privacyPolicyURL": "https://app.northsea.co/terms-and-conditions#privacy",
+        "termsOfServiceURL": "https://app.northsea.co/terms-and-conditions",
+        "brandColor": "#0E0F0F",
+        "brandColorDark": "#F0F0F0",
+        "composerIcon": "./assets/icon.svg",
+        "composerIconDark": "./assets/icon-dark.svg",
+        "logo": "./assets/logo.svg",
+        "logoDark": "./assets/logo-dark.svg",
+        "defaultPrompt": [
+          "Which of my Northsea studies are in fieldwork right now?",
+          "Summarize the key findings of my most recent Northsea study.",
+          "What is the NPS of my latest Northsea study?"
+        ]
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Lists the studies the signed-in account can see.",
+              "prompt": "List my Northsea studies and tell me which ones are live.",
+              "tools_triggered": "list_my_studies",
+              "expected_behavior": "Calls list_my_studies and returns the account's studies with their status, marking the ones in fieldwork. Uses first_live_at, not created_at, for when a study went live."
+            },
+            {
+              "description": "Reads one study's questionnaire and audience.",
+              "prompt": "Show me the questionnaire and the audience segments of my most recent Northsea study.",
+              "tools_triggered": "list_my_studies, get_study",
+              "expected_behavior": "Calls list_my_studies to find the newest study, then get_study for it, and lists its questions with their answer options and its audience segments with their markets."
+            },
+            {
+              "description": "Summarizes a study using its AI executive summary and results.",
+              "prompt": "Summarize the key findings of my most recent Northsea study.",
+              "tools_triggered": "list_my_studies, get_study, query_findings",
+              "expected_behavior": "Finds the newest study, reads it with get_study (including the executive summary when one exists), and backs the summary with figures from query_findings rather than inventing numbers."
+            },
+            {
+              "description": "Computes the Net Promoter Score the way the Results page does.",
+              "prompt": "What is the NPS of my latest Northsea study?",
+              "tools_triggered": "list_my_studies, get_study, query_findings",
+              "expected_behavior": "Finds the NPS question with get_study, calls query_findings with metric nps on it, and reports the score with the number of promoters, passives and detractors and the 95% interval."
+            },
+            {
+              "description": "Compares results between audience segments.",
+              "prompt": "In my most recent Northsea study, how do the answers to the first question differ between audience segments?",
+              "tools_triggered": "list_my_studies, get_study, query_findings",
+              "expected_behavior": "Reads the segment ids from get_study, calls query_findings once per segment with segment_id set, and compares the shares per answer option, stating each segment's number of respondents."
+            }
+          ],
+          "negative": [
+            {
+              "description": "The plugin is read-only. It must not claim to create or change a study, and should say it can only read existing studies.",
+              "prompt": "Create a new Northsea survey about coffee habits and launch it to 500 people."
+            },
+            {
+              "description": "Unrelated to Northsea. No Northsea tool should be called.",
+              "prompt": "What will the weather be in Amsterdam tomorrow?"
+            },
+            {
+              "description": "Asks for other organizations' data. The plugin only returns studies the signed-in account can see, so it must not present any other company's results.",
+              "prompt": "Show me the results of studies that other companies have run on Northsea."
+            }
+          ]
+        },
+        "commerce": false
+      },
+      "publication": {
+        "release_notes": "First release: list your studies, read a study's questionnaire and audience, and query its results."
+      }
+    }
+  }
 }
