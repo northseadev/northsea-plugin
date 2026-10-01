@@ -1,0 +1,33 @@
+name: Published files
+
+# Everything in this repository except .github is published from Northsea's
+# source on each release, and the next release overwrites any change made here.
+# Refuse pull requests that touch it.
+
+on:
+  pull_request:
+
+jobs:
+  check:
+    name: Refuse edits to published files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check changed files
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # Three dots: only what this branch changed, not releases that landed since.
+          CHANGED=$(git diff --name-only "$BASE...$HEAD" -- . ':(exclude).github')
+          if [ -n "$CHANGED" ]; then
+            echo "These files are published from Northsea's source, and the next release overwrites them:"
+            echo ""
+            echo "$CHANGED"
+            echo ""
+            echo "To suggest a change, open an issue on this repository instead."
+            exit 1
+          fi
+          echo "No published files touched."
