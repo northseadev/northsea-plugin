@@ -12,6 +12,5 @@
   "repository": "https://github.com/northseadev/northsea-plugin",
   "license": "MIT",
   "privacyPolicyUrl": "https://app.northsea.co/terms-and-conditions#privacy",
-  "keywords": ["northsea", "market-research", "surveys", "mcp"],
-  "mcpServers": "./mcp.json"
+  "keywords": ["northsea", "market-research", "surveys", "mcp"]
 }

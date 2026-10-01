@@ -13,9 +13,10 @@ client-specific files alongside it for agents that use their own format.
 | Path                              | Purpose                                                                                   |
 | --------------------------------- | ----------------------------------------------------------------------------------------- |
 | `plugin.json`                     | Agent Plugins manifest. Also holds the OpenAI plugin directory listing under `extensions` |
-| `mcp.json`                        | The Northsea MCP server, shared by every client                                           |
+| `mcp.json`                        | The Northsea MCP server, for Agent Plugins clients                                        |
 | `assets/`                         | Logos and icons for the OpenAI plugin directory listing                                   |
-| `.claude-plugin/plugin.json`      | Claude Code plugin manifest, pointing at `mcp.json`                                       |
+| `.claude-plugin/plugin.json`      | Claude plugin manifest                                                                    |
+| `.mcp.json`                       | The Northsea MCP server, for Claude                                                       |
 | `.claude-plugin/marketplace.json` | Lets Claude Code install the plugin from this repository                                  |
 
 ## Install
