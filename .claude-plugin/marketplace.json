@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "northsea",
+  "description": "The Northsea plugin for Claude Code.",
+  "owner": {
+    "name": "Northsea",
+    "url": "https://northsea.co"
+  },
+  "plugins": [
+    {
+      "name": "northsea",
+      "source": "./",
+      "description": "Connect Claude Code to Northsea: list your studies, read a study's questionnaire and audience, and pull the same results the Results page shows. Read-only, with the same access your Northsea account has.",
+      "category": "productivity"
+    }
+  ]
+}

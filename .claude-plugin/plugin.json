@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "northsea",
+  "displayName": "Northsea",
+  "version": "1.0.0",
+  "description": "Connect Claude Code to Northsea: list your studies, read a study's questionnaire and audience, and pull the same results the Results page shows. Read-only, with the same access your Northsea account has.",
+  "author": {
+    "name": "Northsea",
+    "url": "https://northsea.co"
+  },
+  "homepage": "https://github.com/northseadev/northsea-plugin",
+  "repository": "https://github.com/northseadev/northsea-plugin",
+  "license": "MIT",
+  "keywords": ["northsea", "market-research", "surveys", "mcp"],
+  "mcpServers": "./mcp.json"
+}
