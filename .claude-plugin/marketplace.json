@@ -10,7 +10,7 @@
     {
       "name": "northsea",
       "source": "./",
-      "description": "Connect Claude Code to Northsea: list your studies, read a study's questionnaire and audience, and pull the same results the Results page shows. Read-only, with the same access your Northsea account has.",
+      "description": "Connect Claude Code to Northsea: list your studies, read a study's questionnaire and audience, pull the same results the Results page shows, and tell the Northsea team what you need that it can't do yet. Read-only, with the same access your Northsea account has.",
       "category": "productivity"
     }
   ]

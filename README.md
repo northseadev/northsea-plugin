@@ -5,6 +5,11 @@ MCP server, so you can ask about your studies and their results in plain
 language: "which of our studies are in fieldwork?", "what did respondents in
 the UK segment say about pricing?", "what is the NPS for the March wave?".
 
+When you ask for something the plugin cannot do yet, such as editing a survey,
+your agent can tell the Northsea team with the `submit_feedback` tool, so we
+can prioritize it. It is told to describe what you needed, not to include your
+study data or personal details.
+
 ## What's in this repository
 
 The plugin is an [Agent Plugins 1.0](https://agent-plugins.org) package, with
