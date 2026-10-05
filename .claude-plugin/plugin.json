@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "northsea",
   "displayName": "Northsea",
-  "version": "1.0.0",
-  "description": "Connect Claude Code to Northsea: list your studies, read a study's questionnaire and audience, and pull the same results the Results page shows. Read-only, with the same access your Northsea account has.",
+  "version": "1.1.0",
+  "description": "Connect Claude Code to Northsea: list your studies, read a study's questionnaire and audience, pull the same results the Results page shows, and tell the Northsea team what you need that it can't do yet. Read-only, with the same access your Northsea account has.",
   "author": {
     "name": "Northsea",
     "url": "https://northsea.co"
