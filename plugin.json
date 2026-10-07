@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "northsea",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Connect your agent to Northsea: list your studies, read a study's questionnaire and audience, pull the same results the Results page shows, and tell the Northsea team what you need that it can't do yet. Read-only, with the same access your Northsea account has.",
   "author": {
     "name": "Northsea",
@@ -16,13 +16,13 @@
       "interface": {
         "displayName": "Northsea",
         "shortDescription": "Survey studies and results",
-        "longDescription": "Northsea is an AI-native research platform that helps consultants, investors, and strategy teams generate deeper customer insights. This plugin connects your Northsea account, so you can ask about your studies and their results in plain language instead of exporting tables.\n\nAsk which studies are in fieldwork, what a study's questionnaire and audience look like, or what respondents answered. Results are computed exactly as the Northsea Results page computes them: answer distributions with shares, Net Promoter Score with a 95% interval, means and medians, and the written answers to open questions, optionally narrowed to one audience segment.\n\nWhen you ask for something the plugin cannot do yet, such as editing a survey, your agent can pass a short description of the request to the Northsea team so we can prioritize it. It is told to describe what you needed, not to include your study data or personal details.\n\nYou sign in with your own Northsea account. The plugin is read-only and only sees the studies and results your account can see in Northsea.",
+        "longDescription": "Northsea is an AI-native research platform that helps consultants, investors, and strategy teams generate deeper customer insights. This plugin connects your Northsea account, so you can ask about your studies and their results in plain language instead of exporting tables.\n\nAsk which studies are in fieldwork, what a study's questionnaire and audience look like, or what respondents answered. Results are computed exactly as the Northsea Results page computes them: answer distributions with shares, Net Promoter Score with a 95% interval, means and medians, and the written answers to open questions. Narrow them the way the Results page filters do: to one audience segment, to respondents who gave a particular answer (such as an age group or a region), to a date range, by sentiment or by distribution channel.\n\nWhen you ask for something the plugin cannot do yet, such as editing a survey, your agent can pass a short description of the request to the Northsea team so we can prioritize it. It is told to describe what you needed, not to include your study data or personal details.\n\nYou sign in with your own Northsea account. The plugin is read-only and only sees the studies and results your account can see in Northsea.",
         "developerName": "Northsea",
         "category": "Productivity",
         "capabilities": [
           "List the studies your Northsea account can see, with their status and when they went live",
           "Read a study's questionnaire, audience segments and AI executive summary",
-          "Query results: answer distributions, NPS, means and written answers, per audience segment",
+          "Query results: answer distributions, NPS, means and written answers, filtered by segment, answers such as age group, date, sentiment or channel",
           "Tell the Northsea team about a request the plugin cannot handle yet, so it can be prioritized"
         ],
         "websiteURL": "https://northsea.co",
@@ -74,6 +74,12 @@
               "expected_behavior": "Reads the segment ids from get_study, calls query_findings once per segment with segment_id set, and compares the shares per answer option, stating each segment's number of respondents."
             },
             {
+              "description": "Cuts results by a demographic answer, as the Results page filters do.",
+              "prompt": "In my most recent Northsea study, what is the NPS among respondents aged 18 to 34?",
+              "tools_triggered": "list_my_studies, get_study, query_findings",
+              "expected_behavior": "Finds the age question and its answer options with get_study, calls query_findings with metric nps and answer_filters on that question, and reports the score with its base, saying which respondents it covers from base_definition."
+            },
+            {
               "description": "Passes on a request the plugin cannot handle yet.",
               "prompt": "Create a new Northsea survey about coffee habits and launch it to 500 people.",
               "tools_triggered": "submit_feedback",
@@ -94,7 +100,7 @@
         "commerce": false
       },
       "publication": {
-        "release_notes": "When you ask for something the plugin cannot do yet, your agent can now pass it on to the Northsea team with submit_feedback, so we can prioritize it."
+        "release_notes": "Results can now be filtered the way the Results page filters them: by answers such as age group or region, by date range, by sentiment and by distribution channel. Results for a multi-select grid now come back per cell, each with its own base: the respondents who answered that row and were shown that column. base_note on the result says so."
       }
     }
   }
