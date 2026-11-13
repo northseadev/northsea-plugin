@@ -10,6 +10,14 @@ your agent can tell the Northsea team with the `submit_feedback` tool, so we
 can prioritize it. It is told to describe what you needed, not to include your
 study data or personal details.
 
+## Reading results
+
+Findings use the same processing and refresh cycle as the Results page. A
+processing/not-ready response or a tool error does not mean that nobody
+answered. Keep that distinction in any report; do not replace an unavailable
+analysis or failed quote read with a zero or an empty finding. Retry after
+processing completes, or report the failure to the Northsea team.
+
 ## What's in this repository
 
 The plugin is an [Agent Plugins 1.0](https://agent-plugins.org) package, with
