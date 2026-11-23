@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "northsea",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "Connect your agent to Northsea: list your studies, read a study's questionnaire and audience, pull the same results the Results page shows, and tell the Northsea team what you need that it can't do yet. Read-only, with the same access your Northsea account has.",
   "author": {
     "name": "Northsea",
@@ -21,7 +21,8 @@
         "category": "Productivity",
         "capabilities": [
           "List the studies your Northsea account can see, with their status and when they went live",
-          "Read a study's questionnaire, audience segments and AI executive summary",
+          "Read a study's status, workspace and organization with get_study",
+          "Read what a study's results are reported against with get_results_scope: its questionnaire, audience segments, channels and AI executive summary",
           "Query results: answer distributions, NPS, means and written answers, filtered by segment, answers such as age group, date, sentiment or channel",
           "Tell the Northsea team about a request the plugin cannot handle yet, so it can be prioritized"
         ],
@@ -46,44 +47,44 @@
             {
               "description": "Lists the studies the signed-in account can see.",
               "prompt": "List my Northsea studies and tell me which ones are live.",
-              "tools_triggered": "list_my_studies",
-              "expected_behavior": "Calls list_my_studies and returns the account's studies with their status, marking the ones in fieldwork. Uses first_live_at, not created_at, for when a study went live."
+              "tools_triggered": "list_studies",
+              "expected_behavior": "Calls list_studies and returns the account's studies with their status, marking the ones in fieldwork. Uses first_live_at, not created_at, for when a study went live."
             },
             {
               "description": "Reads one study's questionnaire and audience.",
               "prompt": "Show me the questionnaire and the audience segments of my most recent Northsea study.",
-              "tools_triggered": "list_my_studies, get_study",
-              "expected_behavior": "Calls list_my_studies to find the newest study, then get_study for it, and lists its questions with their answer options and its audience segments with their markets."
+              "tools_triggered": "list_studies, get_results_scope",
+              "expected_behavior": "Calls list_studies to find the newest study, then get_results_scope for it, and lists its questions with their answer options and its audience segments with their markets."
             },
             {
               "description": "Summarizes a study using its AI executive summary and results.",
               "prompt": "Summarize the key findings of my most recent Northsea study.",
-              "tools_triggered": "list_my_studies, get_study, query_findings",
-              "expected_behavior": "Finds the newest study, reads it with get_study (including the executive summary when one exists), and backs the summary with figures from query_findings rather than inventing numbers."
+              "tools_triggered": "list_studies, get_results_scope, query_findings",
+              "expected_behavior": "Finds the newest study, reads it with get_results_scope (including the executive summary when one exists), and backs the summary with figures from query_findings rather than inventing numbers."
             },
             {
               "description": "Computes the Net Promoter Score the way the Results page does.",
               "prompt": "What is the NPS of my latest Northsea study?",
-              "tools_triggered": "list_my_studies, get_study, query_findings",
-              "expected_behavior": "Finds the NPS question with get_study, calls query_findings with metric nps on it, and reports the score with the number of promoters, passives and detractors and the 95% interval."
+              "tools_triggered": "list_studies, get_results_scope, query_findings",
+              "expected_behavior": "Finds the NPS question with get_results_scope, calls query_findings with metric nps on it, and reports the score with the number of promoters, passives and detractors and the 95% interval."
             },
             {
               "description": "Compares results between audience segments.",
               "prompt": "In my most recent Northsea study, how do the answers to the first question differ between audience segments?",
-              "tools_triggered": "list_my_studies, get_study, query_findings",
-              "expected_behavior": "Reads the segment ids from get_study, calls query_findings once per segment with segment_id set, and compares the shares per answer option, stating each segment's number of respondents."
+              "tools_triggered": "list_studies, get_results_scope, query_findings",
+              "expected_behavior": "Reads the segment ids from get_results_scope, calls query_findings once per segment with segment_id set, and compares the shares per answer option, stating each segment's number of respondents."
             },
             {
               "description": "Cuts results by a demographic answer, as the Results page filters do.",
               "prompt": "In my most recent Northsea study, what is the NPS among respondents aged 18 to 34?",
-              "tools_triggered": "list_my_studies, get_study, query_findings",
-              "expected_behavior": "Finds the age question and its answer options with get_study, calls query_findings with metric nps and answer_filters on that question, and reports the score with its base, saying which respondents it covers from base_definition."
+              "tools_triggered": "list_studies, get_results_scope, query_findings",
+              "expected_behavior": "Finds the age question and its answer options with get_results_scope, calls query_findings with metric nps and answer_filters on that question, and reports the score with its base, saying which respondents it covers from base_definition."
             },
             {
               "description": "Breaks down an NPS question asked once per loop item into its 0-10 scores.",
               "prompt": "In my latest Northsea study, show the 0 to 10 recommend scores for each vendor as a stacked bar.",
-              "tools_triggered": "list_my_studies, get_study, query_findings",
-              "expected_behavior": "Finds the looped NPS question with get_study, calls query_findings with metric distribution on it, and charts each group's scores (count and share_pct per score), one bar per loop item, without pooling the groups into one score."
+              "tools_triggered": "list_studies, get_results_scope, query_findings",
+              "expected_behavior": "Finds the looped NPS question with get_results_scope, calls query_findings with metric distribution on it, and charts each group's scores (count and share_pct per score), one bar per loop item, without pooling the groups into one score."
             },
             {
               "description": "Passes on a request the plugin cannot handle yet.",
@@ -106,7 +107,7 @@
         "commerce": false
       },
       "publication": {
-        "release_notes": "A study's calculations, numbers worked out from each respondent's answers such as a total or a score, are now listed by get_study after the questions and marked as calculations. query_findings reads one like a numeric question: its values with metric distribution, its mean and median with metric mean."
+        "release_notes": "Studies are now listed by list_studies. get_study now returns only the study itself: its status, whether it is in fieldwork, and its workspace and organization. The questionnaire, audience segments, channels and executive summary moved to the new get_results_scope, whose ids query_findings accepts."
       }
     }
   }
