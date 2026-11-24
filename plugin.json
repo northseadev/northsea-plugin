@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "northsea",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Connect your agent to Northsea: list your studies, read a study's questionnaire and audience, pull the same results the Results page shows, and tell the Northsea team what you need that it can't do yet. Read-only, with the same access your Northsea account has.",
   "author": {
     "name": "Northsea",
@@ -20,7 +20,7 @@
         "developerName": "Northsea",
         "category": "Productivity",
         "capabilities": [
-          "List the studies your Northsea account can see, with their status and when they went live",
+          "List the studies in your Northsea organizations, with their status and when they went live, or only the ones in fieldwork",
           "Read a study's status, workspace and organization with get_study",
           "Read what a study's results are reported against with get_results_scope: its questionnaire, audience segments, channels and AI executive summary",
           "Query results: answer distributions, NPS, means and written answers, filtered by segment, answers such as age group, date, sentiment or channel",
@@ -49,6 +49,12 @@
               "prompt": "List my Northsea studies and tell me which ones are live.",
               "tools_triggered": "list_studies",
               "expected_behavior": "Calls list_studies and returns the account's studies with their status, marking the ones in fieldwork. Uses first_live_at, not created_at, for when a study went live."
+            },
+            {
+              "description": "Lists only the studies in fieldwork.",
+              "prompt": "Which of my Northsea studies are in fieldwork right now?",
+              "tools_triggered": "list_studies",
+              "expected_behavior": "Calls list_studies with in_fieldwork set to true and lists those studies with their organization, saying which are live and which are paused. Does not page through studies that are not in fieldwork."
             },
             {
               "description": "Reads one study's questionnaire and audience.",
@@ -107,7 +113,7 @@
         "commerce": false
       },
       "publication": {
-        "release_notes": "Studies are now listed by list_studies. get_study now returns only the study itself: its status, whether it is in fieldwork, and its workspace and organization. The questionnaire, audience segments, channels and executive summary moved to the new get_results_scope, whose ids query_findings accepts."
+        "release_notes": "list_studies lists all your organizations when you leave organization_id out, names each study's organization, and takes in_fieldwork to list only the studies in fieldwork (live or paused), or only the others."
       }
     }
   }
