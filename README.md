@@ -2,7 +2,7 @@
 
 Connects your AI agent to [Northsea](https://northsea.co) through the Northsea
 MCP server, so you can ask about your studies and their results in plain
-language: "which of our studies are in fieldwork?", "what did respondents in
+language: "which of our studies are in fieldwork, and how far along are they?", "what did respondents in
 the UK segment say about pricing?", "what is the NPS for the March wave?".
 
 When you ask for something the plugin cannot do yet, such as editing a survey,

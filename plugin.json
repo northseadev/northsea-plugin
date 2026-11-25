@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "northsea",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Connect your agent to Northsea: list your studies, read a study's questionnaire and audience, pull the same results the Results page shows, and tell the Northsea team what you need that it can't do yet. Read-only, with the same access your Northsea account has.",
   "author": {
     "name": "Northsea",
@@ -20,7 +20,7 @@
         "developerName": "Northsea",
         "category": "Productivity",
         "capabilities": [
-          "List the studies in your Northsea organizations, with their status and when they went live, or only the ones in fieldwork",
+          "List the studies in your Northsea organizations, with their status and when they went live, or only the ones in fieldwork, each with its accepted completes against target, its results date and when the last complete arrived",
           "Read a study's status, workspace and organization with get_study",
           "Read what a study's results are reported against with get_results_scope: its questionnaire, audience segments, channels and AI executive summary",
           "Query results: answer distributions, NPS, means and written answers, filtered by segment, answers such as age group, date, sentiment or channel",
@@ -55,6 +55,12 @@
               "prompt": "Which of my Northsea studies are in fieldwork right now?",
               "tools_triggered": "list_studies",
               "expected_behavior": "Calls list_studies with in_fieldwork set to true and lists those studies with their organization, saying which are live and which are paused. Does not page through studies that are not in fieldwork."
+            },
+            {
+              "description": "Reports how far each study in fieldwork is.",
+              "prompt": "How far along are my Northsea studies in fieldwork, and which results dates are coming up?",
+              "tools_triggered": "list_studies",
+              "expected_behavior": "Calls list_studies with in_fieldwork set to true and reports each study's accepted completes against its target, its results date (saying when none is set) and when the last accepted complete arrived. Does not invent a count for a study whose fieldwork.accepted is null."
             },
             {
               "description": "Reads one study's questionnaire and audience.",
@@ -113,7 +119,7 @@
         "commerce": false
       },
       "publication": {
-        "release_notes": "list_studies lists all your organizations when you leave organization_id out, names each study's organization, and takes in_fieldwork to list only the studies in fieldwork (live or paused), or only the others."
+        "release_notes": "list_studies gives each study in fieldwork a fieldwork block: accepted completes, target, results date and when the newest accepted complete arrived. It also takes limit for shorter pages and reports as_of, when the page was read, and truncated, true while more pages follow."
       }
     }
   }
